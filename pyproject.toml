@@ -17,4 +17,4 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
-poetry-dependency-updater = 'poetry_ci_updater.main:main'
+poetry-ci-updater = 'poetry_ci_updater.main:main'
