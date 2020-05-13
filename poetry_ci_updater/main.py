@@ -1,6 +1,7 @@
 import logging
 import re
 import subprocess
+import sys
 
 import click
 import git
@@ -8,6 +9,7 @@ from git import Repo
 
 from poetry_ci_updater.providers.gitlab import Gitlab
 
+logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -54,8 +56,6 @@ def push_update(repo: Repo, branch_name: str):
 def main(branch_name: str, create_mr: bool, verbose):
     if verbose:
         logger.setLevel(logging.DEBUG)
-    else:
-        logger.setLevel(logging.WARNING)
 
     repo = Repo()
     updates = check_for_updates()
