@@ -44,6 +44,7 @@ def push_update(repo: Repo, branch_name: str):
         git_commit = repo.git.commit(m=f'Update Dependencies.')
         logger.debug(git_commit)
     except git.exc.GitCommandError as e:
+        logger.debug(e)
         logger.info('Nothing to commit changed')
     git_push = repo.git.push('-u', 'origin', branch_name)
     logger.debug(git_push)
