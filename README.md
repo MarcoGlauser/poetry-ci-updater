@@ -30,6 +30,7 @@ update-dependencies:
     - git config user.name "${GITLAB_USER_NAME}"
   script:
     - pip install poetry
+    - poetry install
     - git remote rm origin
     - git remote add origin https://gitlab-ci-token:${PERSONAL_ACCESS_TOKEN}@${CI_SERVER_HOST}:${CI_SERVER_PORT}/${CI_PROJECT_PATH}.git
     - CI_JOB_TOKEN=${PERSONAL_ACCESS_TOKEN} poetry run poetry-ci-updater
