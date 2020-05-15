@@ -33,7 +33,7 @@ def check_for_updates():
 
 
 def update():
-    poetry_output = subprocess.run(["poetry", "update"], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
+    poetry_output = subprocess.run(["poetry", "update", '--lock'], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
     logger.debug(poetry_output)
 
 
