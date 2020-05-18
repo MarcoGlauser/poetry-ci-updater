@@ -9,7 +9,7 @@ from git import Repo
 
 from poetry_ci_updater.providers.gitlab import Gitlab
 
-logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -61,14 +61,16 @@ def main(branch_name: str, create_mr: bool, verbose):
     repo = Repo()
     updates = check_for_updates()
     if len(updates) > 0:
+        logger.info('Available updates found.')
         checkout_branch(repo, branch_name)
         update()
         push_update(repo, branch_name)
+        logger.info('Updated the dependencies!')
         if create_mr:
             provider = Gitlab(branch_name, updates)
             provider.run()
     else:
-        logger.info('no updates')
+        logger.info('No updates available. Everything is up to date.')
 
 
 if __name__ == '__main__':
