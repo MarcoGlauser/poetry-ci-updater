@@ -44,7 +44,7 @@ class Gitlab(Provider):
         open_merge_requests = response.json()
         try:
             return open_merge_requests[0]
-        except KeyError:
+        except IndexError:
             return None
 
     def create_merge_request(self):
