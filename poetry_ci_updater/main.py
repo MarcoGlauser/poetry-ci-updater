@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def checkout_branch(repo: Repo, branch_name: str):
-    repo.git.fetch()
+    repo.git.fetch('--all')
     try:
         repo.git.checkout('--track', f'origin/{branch_name}')
     except git.exc.GitCommandError as e:
