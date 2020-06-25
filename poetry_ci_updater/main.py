@@ -14,15 +14,17 @@ logger = logging.getLogger(__name__)
 
 
 def checkout_branch(repo: Repo, branch_name: str):
-    repo.git.fetch('--all')
+    repo.git.fetch()
     try:
         repo.git.checkout('--track', f'origin/{branch_name}')
     except git.exc.GitCommandError as e:
         try:
-            repo.git.checkout(b=branch_name)
+            # if a local branch exists without a remote counterpart, delete it.
+            repo.git.branch(d=branch_name)
         except git.exc.GitCommandError as e:
-            repo.git.checkout(branch_name)
-            repo.git.pull()
+            pass
+        finally:
+            repo.git.checkout(b=branch_name)
 
 
 def check_for_updates():
