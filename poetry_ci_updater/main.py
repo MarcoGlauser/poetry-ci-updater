@@ -20,7 +20,7 @@ def checkout_branch(repo: Repo, branch_name: str):
     except git.exc.GitCommandError as e:
         try:
             # if a local branch exists without a remote counterpart, delete it.
-            repo.git.branch(d=branch_name)
+            repo.git.branch(D=branch_name)
         except git.exc.GitCommandError as e:
             pass
         finally:
