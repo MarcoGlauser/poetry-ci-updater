@@ -17,7 +17,7 @@ def checkout_branch(repo: Repo, branch_name: str):
     repo.git.fetch()
     try:
         repo.git.checkout(branch_name)
-        repo.git.pull(f'origin/{branch_name}', branch_name)
+        repo.git.rebase(f'origin/{branch_name}')
     except git.exc.GitCommandError as e:
         try:
             repo.git.checkout('--track', f'origin/{branch_name}')
