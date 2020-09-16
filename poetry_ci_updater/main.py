@@ -16,14 +16,13 @@ logger = logging.getLogger(__name__)
 def checkout_branch(repo: Repo, branch_name: str):
     repo.git.fetch()
     try:
-        repo.git.checkout(branch_name)
-        repo.git.rebase(f'origin/{branch_name}')
+        repo.git.branch(D=branch_name)
+    except git.exc.GitCommandError:
+        pass
+    try:
+        repo.git.checkout('--track', f'origin/{branch_name}')
     except git.exc.GitCommandError as e:
-        try:
-            repo.git.checkout('--track', f'origin/{branch_name}')
-        except git.exc.GitCommandError as e:
-            repo.git.branch(D=branch_name)
-            repo.git.checkout(b=branch_name)
+        repo.git.checkout(b=branch_name)
 
 
 def check_for_updates():
