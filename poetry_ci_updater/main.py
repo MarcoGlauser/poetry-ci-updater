@@ -17,11 +17,12 @@ def checkout_branch(repo: Repo, branch_name: str):
     repo.git.fetch()
     try:
         repo.git.branch(D=branch_name)
-    except git.exc.GitCommandError:
-        pass
+    except git.exc.GitCommandError as e:
+        logger.debug(e)
     try:
         repo.git.checkout('--track', f'origin/{branch_name}')
     except git.exc.GitCommandError as e:
+        logger.debug(e)
         repo.git.checkout(b=branch_name)
 
 
