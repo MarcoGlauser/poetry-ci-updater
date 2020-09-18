@@ -8,13 +8,17 @@ import git
 from git import Repo
 
 from poetry_ci_updater.providers.gitlab import Gitlab
+from poetry_ci_updater.providers.provider import Provider
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def checkout_branch(repo: Repo, branch_name: str):
+def checkout_remote_or_new_branch(repo: Repo, provider:Provider, branch_name: str):
     repo.git.fetch()
+    if repo.git.branch('--show-current') == branch_name:
+        repo.git.checkout(provider.default_branch())
+        repo.git.pull()
     try:
         repo.git.branch(D=branch_name)
     except git.exc.GitCommandError as e:
@@ -61,14 +65,14 @@ def main(branch_name: str, create_mr: bool, verbose):
 
     repo = Repo()
     updates = check_for_updates()
+    provider = Gitlab(branch_name, updates)
     if len(updates) > 0:
         logger.info('Available updates found.')
-        checkout_branch(repo, branch_name)
+        checkout_remote_or_new_branch(repo, provider, branch_name)
         update()
         push_update(repo, branch_name)
         logger.info('Updated the dependencies!')
         if create_mr:
-            provider = Gitlab(branch_name, updates)
             provider.run()
     else:
         logger.info('No updates available. Everything is up to date.')

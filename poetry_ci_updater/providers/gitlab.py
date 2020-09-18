@@ -17,6 +17,9 @@ class Gitlab(Provider):
         else:
             self.create_merge_request()
 
+    def default_branch(self):
+        return os.environ.get('CI_COMMIT_BRANCH', default='master')
+
     def add_note(self, merge_request):
         url = f'https://gitlab.com/api/v4/projects/{self.project_id}/merge_requests/{merge_request["iid"]}/notes'
         headers = {
