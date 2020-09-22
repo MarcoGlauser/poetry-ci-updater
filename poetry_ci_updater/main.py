@@ -16,11 +16,13 @@ logger = logging.getLogger(__name__)
 
 def checkout_remote_or_new_branch(repo: Repo, provider:Provider, branch_name: str):
     repo.git.fetch()
+    logger.debug(repo.git.rev_parse('--abbrev-ref', 'HEAD'))
     if repo.git.rev_parse('--abbrev-ref', 'HEAD') == branch_name:
         repo.git.checkout(provider.default_branch())
         repo.git.pull()
     try:
         repo.git.branch(D=branch_name)
+        logger.debug(f'deleted {branch_name}')
     except git.exc.GitCommandError as e:
         logger.debug(e)
     try:
