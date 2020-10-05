@@ -34,13 +34,13 @@ def checkout_remote_or_new_branch(repo: Repo, provider:Provider, branch_name: st
 
 def check_for_updates():
     poetry_update_pattern = re.compile(r'Updating [a-zA-Z0-9\-_]+ \(.*\)')
-    poetry_output = subprocess.run(["poetry", "update", '--dry-run'], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
+    poetry_output = subprocess.run(["poetry", "update", '--dry-run', '--no-ansi'], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
     logger.debug(poetry_output)
     return [poetry_update_pattern.search(line).group() for line in poetry_output if poetry_update_pattern.search(line)]
 
 
 def update():
-    poetry_output = subprocess.run(["poetry", "update", '--lock'], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
+    poetry_output = subprocess.run(["poetry", "update", '--lock', '--no-ansi'], stdout=subprocess.PIPE).stdout.decode('utf-8').splitlines()
     logger.debug(poetry_output)
 
 
