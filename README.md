@@ -1,5 +1,7 @@
 # Poetry CI Updater
 
+## Not maintained anymore use [renovate](https://github.com/renovatebot/renovate) instead
+
 This package is intended to help integrating poetry with your CI.
 
 It will create a new branch where it will push the updated poetry.lock to.
